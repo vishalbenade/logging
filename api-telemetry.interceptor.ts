@@ -45,7 +45,7 @@ export class ApiTelemetryInterceptor implements HttpInterceptor {
     const startTime = performance.now();
     const safeUrl   = this.sanitiseUrl(req.url);
 
-    // ââ Log outbound request âââââââââââââââââââââââââââââââââââââââââââââââââ
+    // ── Log outbound request ─────────────────────────────────────────────────
     this.telemetry.log(LogLevel.DEBUG, 'API_REQUEST',
       `${req.method} ${safeUrl}`, {
         api: {
@@ -73,7 +73,7 @@ export class ApiTelemetryInterceptor implements HttpInterceptor {
     );
   }
 
-  // ââ Private helpers ââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+  // ── Private helpers ────────────────────────────────────────────────────────
 
   private logResponse(
     requestId: string,
@@ -86,7 +86,7 @@ export class ApiTelemetryInterceptor implements HttpInterceptor {
     const level      = res.status >= 400 ? LogLevel.WARN : LogLevel.INFO;
 
     this.telemetry.log(level, 'API_RESPONSE',
-      `${req.method} ${safeUrl} â ${res.status}`, {
+      `${req.method} ${safeUrl} → ${res.status}`, {
         api: {
           requestId,
           method    : req.method,
@@ -110,7 +110,7 @@ export class ApiTelemetryInterceptor implements HttpInterceptor {
     const durationMs = Math.round(performance.now() - start);
 
     this.telemetry.log(LogLevel.ERROR, 'API_RESPONSE',
-      `${req.method} ${safeUrl} â ${err.status || 'NetworkError'}`, {
+      `${req.method} ${safeUrl} → ${err.status || 'NetworkError'}`, {
         api: {
           requestId,
           method    : req.method,
