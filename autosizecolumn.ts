@@ -21,3 +21,28 @@ private calcColumnWidth(field: string, data: any[]): number {
   const computed = Math.max(headerWidth, maxCellWidth);
   return Math.min(Math.max(computed, MIN), MAX);
 }
+
+//new
+
+private canvasCtx: CanvasRenderingContext2D | null = null;
+
+private calcColumnWidth(field: string): number {
+  if (!this.canvasCtx) {
+    this.canvasCtx = document.createElement('canvas').getContext('2d')!;
+    this.canvasCtx.font = 'bold 11px Inter';
+  }
+  return Math.ceil(this.canvasCtx.measureText(field).width) + 32;
+}
+
+buildColumnDefs(jsonResponse: any[]): ColDef[] {
+  if (!jsonResponse?.length) return [];
+
+  return Object.keys(jsonResponse[0]).map(key => ({
+    field: key,
+    headerName: key,
+    width: this.calcColumnWidth(key),
+    resizable: true,
+  }));
+}
+
+
